@@ -1,4 +1,29 @@
-# Opciones puras de estrellas (sin números)
+import streamlit as st
+from streamlit_gsheets import GSheetsConnection
+import pandas as pd
+
+# Configuración de la página
+st.set_page_config(
+    page_title="Encuesta de Satisfacción | Ingroup",
+    page_icon="📊",
+    layout="centered"
+)
+
+# Cabecera con el Título a la izquierda y el Logo a la derecha
+col_izq, col_der = st.columns([3, 1])
+
+with col_izq:
+    st.markdown("# Valoración del servicio")
+    st.markdown("Marca de 1 a 5 estrellas cada aspecto, donde 1 es «Muy insatisfecho/a» y 5 es «Muy satisfecho/a».")
+
+with col_der:
+    st.image("ingroup - negroberde.png", width=140)
+
+st.divider()
+
+# Formulario de la encuesta
+with st.form("encuesta_form"):
+    
     opciones_estrellas = ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"]
     
     st.subheader("Valoración del servicio")
@@ -35,15 +60,12 @@
     
     comentarios = st.text_area("Comentarios o sugerencias adicionales (opcional):")
     
-    # Botón de envío
     enviar = st.form_submit_button("Enviar valoración")
 
 if enviar:
-    # Como ahora guardamos solo las estrellas, contamos cuántas hay para sacar el número (1 a 5)
     def extraer_numero(texto_estrella):
-        return len(texto_estrella) # "⭐" da 1, "⭐⭐" da 2, "⭐⭐⭐⭐⭐" da 5
+        return len(texto_estrella)
 
-    # Conexión con Google Sheets
     conn = st.connection("gsheets", type=GSheetsConnection)
     df_actual = conn.read(ttl=0)
     
@@ -56,8 +78,8 @@ if enviar:
         "Comentarios": comentarios
     }
     
-    import pandas as pd
     df_nuevo = pd.concat([df_actual, pd.DataFrame([nueva_fila])], ignore_index=True)
     conn.update(data=df_nuevo)
     
     st.success("¡Muchas gracias! Tu respuesta se ha enviado correctamente.")
+ 
