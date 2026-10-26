@@ -15,7 +15,7 @@ col_izq, col_der = st.columns([3, 1])
 with col_izq:
     st.markdown("# Valoración del servicio")
     st.markdown("¿Cómo ha sido tu experiencia con Ingroup? Tu opinión nos ayuda a seguir mejorando nuestro servicio de selección.")
-    st.markdown("**Marca de 1 a 5 estrellas cada aspecto, donde 1 es «Muy insatisfecho/a» y 5 es «Muy satisfecho/a».**")
+    st.markdown("**Marca de 1 a 5 cada aspecto, donde 1 es «Muy insatisfecho/a» y 5 es «Muy satisfecho/a».**")
 
 with col_der:
     st.image("ingroup - negroberde.png", width=140)
@@ -25,45 +25,42 @@ st.divider()
 # Formulario de la encuesta completo
 with st.form("encuesta_form"):
     
-    st.subheader("Valoración del service")
+    st.subheader("Valoración del servicio")
     
-    # Opciones ordenadas verticalmente de 1 a 5 hacia abajo
-    opciones_estrellas = {
-        "⭐ - 1 (Muy insatisfecho/a)": 1,
-        "⭐⭐ - 2": 2,
-        "⭐⭐⭐ - 3": 3,
-        "⭐⭐⭐⭐ - 4": 4,
-        "⭐⭐⭐⭐⭐ - 5 (Muy satisfecho/a)": 5
-    }
-    
-    sat_general = st.radio(
+    # Barras deslizantes (st.slider) del 1 al 5
+    sat_general = st.slider(
         "Satisfacción general con el servicio.",
-        options=list(opciones_estrellas.keys()),
-        horizontal=False
+        min_value=1,
+        max_value=5,
+        value=3
     )
     
-    comprension = st.radio(
+    comprension = st.slider(
         "Comprensión de las necesidades de tu empresa.",
-        options=list(opciones_estrellas.keys()),
-        horizontal=False
+        min_value=1,
+        max_value=5,
+        value=3
     )
     
-    adecuacion = st.radio(
+    adecuacion = st.slider(
         "Adecuación de los candidatos presentados.",
-        options=list(opciones_estrellas.keys()),
-        horizontal=False
+        min_value=1,
+        max_value=5,
+        value=3
     )
     
-    rapidez = st.radio(
+    rapidez = st.slider(
         "Rapidez del proceso de selección.",
-        options=list(opciones_estrellas.keys()),
-        horizontal=False
+        min_value=1,
+        max_value=5,
+        value=3
     )
     
-    comunicacion = st.radio(
+    comunicacion = st.slider(
         "Comunicación y seguimiento durante el proceso.",
-        options=list(opciones_estrellas.keys()),
-        horizontal=False
+        min_value=1,
+        max_value=5,
+        value=3
     )
     
     st.divider()
@@ -91,11 +88,11 @@ if enviar:
     df_actual = conn.read(ttl=0)
     
     nueva_fila = {
-        "Satisfacción General": opciones_estrellas[sat_general],
-        "Comprensión Necesidades": opciones_estrellas[comprension],
-        "Adecuación Candidatos": opciones_estrellas[adecuacion],
-        "Rapidez": opciones_estrellas[rapidez],
-        "Comunicación": opciones_estrellas[comunicacion],
+        "Satisfacción General": sat_general,
+        "Comprensión Necesidades": comprension,
+        "Adecuación Candidatos": adecuacion,
+        "Rapidez": rapidez,
+        "Comunicación": comunicacion,
         "Lo que más valoras": lo_que_mas_valoras,
         "Qué podríamos mejorar": podriamos_mejorar,
         "Volvería a confiar": volveria
