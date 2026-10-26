@@ -25,45 +25,45 @@ st.divider()
 # Formulario de la encuesta completo
 with st.form("encuesta_form"):
     
-    st.subheader("Valoración del servicio")
+    st.subheader("Valoración del service")
     
-    # Opciones numéricas claras del 1 al 5 con estrellas limpias
+    # Opciones ordenadas verticalmente de 1 a 5 hacia abajo
     opciones_estrellas = {
-        "⭐ (1 - Muy insatisfecho/a)": 1,
-        "⭐⭐ (2)": 2,
-        "⭐⭐⭐ (3)": 3,
-        "⭐⭐⭐⭐ (4)": 4,
-        "⭐⭐⭐⭐⭐ (5 - Muy satisfecho/a)": 5
+        "⭐ - 1 (Muy insatisfecho/a)": 1,
+        "⭐⭐ - 2": 2,
+        "⭐⭐⭐ - 3": 3,
+        "⭐⭐⭐⭐ - 4": 4,
+        "⭐⭐⭐⭐⭐ - 5 (Muy satisfecho/a)": 5
     }
     
     sat_general = st.radio(
         "Satisfacción general con el servicio.",
         options=list(opciones_estrellas.keys()),
-        horizontal=True
+        horizontal=False
     )
     
     comprension = st.radio(
         "Comprensión de las necesidades de tu empresa.",
         options=list(opciones_estrellas.keys()),
-        horizontal=True
+        horizontal=False
     )
     
     adecuacion = st.radio(
         "Adecuación de los candidatos presentados.",
         options=list(opciones_estrellas.keys()),
-        horizontal=True
+        horizontal=False
     )
     
     rapidez = st.radio(
         "Rapidez del proceso de selección.",
         options=list(opciones_estrellas.keys()),
-        horizontal=True
+        horizontal=False
     )
     
     comunicacion = st.radio(
         "Comunicación y seguimiento durante el proceso.",
         options=list(opciones_estrellas.keys()),
-        horizontal=True
+        horizontal=False
     )
     
     st.divider()
@@ -79,7 +79,8 @@ with st.form("encuesta_form"):
             "Probablemente sí",
             "No lo tengo claro",
             "Probablemente no"
-        ]
+        ],
+        horizontal=False
     )
     
     enviar = st.form_submit_button("Enviar valoración")
