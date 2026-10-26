@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
+from datetime import datetime
 
 # Configuración de la página
 st.set_page_config(
@@ -25,9 +26,13 @@ st.divider()
 # Formulario de la encuesta completo
 with st.form("encuesta_form"):
     
+    # Campo obligatorio para el nombre de la empresa
+    empresa = st.text_input("Nombre de la empresa:")
+    
+    st.divider()
     st.subheader("Valoración del servicio")
     
-    # Barras deslizantes (st.slider) del 1 al 5
+    # Barras deslizantes (st.slider) del 1 al 5 en vuestro color corporativo
     sat_general = st.slider(
         "Satisfacción general con el servicio.",
         min_value=1,
@@ -83,22 +88,31 @@ with st.form("encuesta_form"):
     enviar = st.form_submit_button("Enviar valoración")
 
 if enviar:
-    # Conexión con Google Sheets
-    conn = st.connection("gsheets", type=GSheetsConnection)
-    df_actual = conn.read(ttl=0)
-    
-    nueva_fila = {
-        "Satisfacción General": sat_general,
-        "Comprensión Necesidades": comprension,
-        "Adecuación Candidatos": adecuacion,
-        "Rapidez": rapidez,
-        "Comunicación": comunicacion,
-        "Lo que más valoras": lo_que_mas_valoras,
-        "Qué podríamos mejorar": podriamos_mejorar,
-        "Volvería a confiar": volveria
-    }
-    
-    df_nuevo = pd.concat([df_actual, pd.DataFrame([nueva_fila])], ignore_index=True)
-    conn.update(data=df_nuevo)
-    
-    st.success("¡Muchas gracias por tu tiempo y confianza! Tu respuesta se ha enviado correctamente.")
+    if not empresa.strip():
+        st.warning("Por favor, introduce el nombre de tu empresa antes de enviar.")
+    else:
+        # Fecha y hora actual
+        fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # Conexión con Google Sheets
+        conn = st.connection("gsheets", type=GSheetsConnection)
+        df_actual = conn.read(ttl=0)
+        
+        # Diccionario con las claves exactamente iguales a las columnas de tu Excel
+        nueva_fila = {
+            "Fecha": fecha_actual,
+            "Empresa": empresa,
+            "Satisfaccion_General": sat_general,
+            "Comprension_Necesidades": comprension,
+            "Adecuacion_Candidatos": adecuacion,
+            "Rapidez": rapidez,
+            "Comunicacion": comunicacion,
+            "Lo_Que_Mas_Valora": lo_que_mas_valoras,
+            "Que_Mejorar": podriamos_mejorar,
+            "Volveria_A_Confiar": volveria
+        }
+        
+        df_nuevo = pd.concat([df_actual, pd.DataFrame([nueva_fila])], ignore_index=True)
+        conn.update(data=df_nuevo)
+        
+        st.success("¡Muchas gracias por tu tiempo y confianza! Tu respuesta se ha enviado correctamente.")
