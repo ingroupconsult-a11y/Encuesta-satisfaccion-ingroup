@@ -14,7 +14,7 @@ st.set_page_config(
 col_izq, col_der = st.columns([3, 1])
 
 with col_izq:
-    st.markdown("# Valoración del servicio")
+    st.markdown("# Encuesta de satisfacción")
     st.markdown("¿Cómo ha sido tu experiencia con Ingroup? Tu opinión nos ayuda a seguir mejorando nuestro servicio de selección.")
     st.markdown("**Marca de 1 a 5 cada aspecto, donde 1 es «Muy insatisfecho/a» y 5 es «Muy satisfecho/a».**")
 
